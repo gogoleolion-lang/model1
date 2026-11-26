@@ -1,0 +1,17 @@
+name: upload-kaguya-outfits
+on:
+  push:
+    branches: [upload-kaguya-outfits]
+permissions:
+  contents: write
+jobs:
+  up:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sha256sum Kaguya_Outfits.zip
+          gh release upload v1.0.0 Kaguya_Outfits.zip --clobber -R ${{ github.repository }}
