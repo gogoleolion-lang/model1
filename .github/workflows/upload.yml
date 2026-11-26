@@ -1,0 +1,19 @@
+name: upload-assets
+on:
+  push:
+    branches: [upload-assets]
+permissions:
+  contents: write
+jobs:
+  up:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Join and upload
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat parts/Sherley_Wardrobe.zip.part* > Sherley_Wardrobe.zip
+          ls -l Sherley_Wardrobe.zip parts/sherley_detective_room.zip
+          sha256sum Sherley_Wardrobe.zip parts/sherley_detective_room.zip
+          gh release upload v1.0.0 Sherley_Wardrobe.zip parts/sherley_detective_room.zip --clobber -R ${{ github.repository }}
